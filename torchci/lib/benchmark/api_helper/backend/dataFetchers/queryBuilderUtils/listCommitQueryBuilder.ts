@@ -1,3 +1,4 @@
+import { benchmarkTable } from "lib/clickhouse";
 import { BenchmarkListCommitFetcher } from "../type";
 import { ExecutableQueryBase, QueryBuilder } from "./queryBuilder";
 
@@ -20,7 +21,7 @@ export class BenchmarkListCommitQueryBuilder
     super();
     this.builder = new QueryBuilder(
       {
-        table: "benchmark.oss_ci_benchmark_metadata",
+        table: benchmarkTable("oss_ci_benchmark_metadata"),
         select_exists: true,
         where_exists: true,
         prewhere: [

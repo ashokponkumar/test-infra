@@ -1,6 +1,11 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
   reactStrictMode: true,
+  // Opt-in, so the Vercel deployment is untouched: `standalone` emits a self-contained server
+  // bundle, which is what a container image needs and what Vercel must not be given.
+  ...(process.env.NEXT_OUTPUT_STANDALONE === "1"
+    ? { output: "standalone" }
+    : {}),
   async rewrites() {
     return [
       {

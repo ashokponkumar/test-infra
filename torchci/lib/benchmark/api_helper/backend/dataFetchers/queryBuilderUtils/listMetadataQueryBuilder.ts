@@ -4,6 +4,7 @@ import {
   DEFAULT_DTYPE_NAME,
   DEFAULT_MODE_NAME,
 } from "lib/benchmark/llms/common";
+import { benchmarkTable } from "lib/clickhouse";
 import ld from "lodash";
 import {
   BenchmarkMetadataItem,
@@ -24,7 +25,7 @@ export class BenchmarkMetadataQuery
   constructor() {
     super();
     this.builder = new QueryBuilder({
-      table: "benchmark.oss_ci_benchmark_metadata",
+      table: benchmarkTable("oss_ci_benchmark_metadata"),
       distinct: true,
       select: [
         ["benchmark_name", "benchmark"],

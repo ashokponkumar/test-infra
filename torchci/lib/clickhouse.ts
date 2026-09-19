@@ -20,6 +20,43 @@ export function getClickhouseClient() {
 }
 //
 
+/**
+ * Database holding the benchmark tables (oss_ci_benchmark_*).
+ *
+ * A setting rather than a literal so a self-hosted deployment can point the benchmark pages at
+ * its own database. The table names were hardcoded as `benchmark.oss_ci_*` in each query
+ * builder, which meant overriding the mounted clickhouse_queries/*.sql only half-worked: the raw
+ * queries resolved against the deployment's database while these builders still read upstream's.
+ * Defaults to `benchmark`, so hud.pytorch.org is unaffected.
+ */
+export function benchmarkDatabase(): string {
+  return process.env.CLICKHOUSE_BENCHMARK_DATABASE ?? "benchmark";
+}
+
+/** `<benchmark database>.<table>`, for the benchmark query builders. */
+export function benchmarkTable(table: string): string {
+  return `${benchmarkDatabase()}.${table}`;
+}
+
+/**
+ * Point a saved query's `benchmark.oss_ci_*` references at `benchmarkDatabase()`.
+ *
+ * 14 files under clickhouse_queries/ qualify those tables inline, and they are read from disk
+ * rather than composed, so a deployment cannot redirect them the way it can the query builders.
+ * Rewriting here covers all of them in one place instead of asking each deployment to mount 14
+ * patched copies. A no-op on the default database, so hud.pytorch.org is unaffected.
+ *
+ * Deliberately narrow: only the `benchmark.` prefix on an `oss_ci_`-prefixed table is touched, so
+ * a query naming any other database (`default.`, `fortesting.`) is left exactly as written.
+ */
+export function retargetBenchmarkDatabase(query: string): string {
+  const db = benchmarkDatabase();
+  if (db === "benchmark") {
+    return query;
+  }
+  return query.replace(/\bbenchmark\.(oss_ci_\w+)/g, `${db}.$1`);
+}
+
 export function getClickhouseClientWritable() {
   return createClient({
     host: process.env.CLICKHOUSE_HUD_USER_URL ?? "http://localhost:8123",
@@ -79,10 +116,12 @@ export async function queryClickhouseSaved(
    * During local development, if this fails due to "cannot find module ...
    * params.json", delete the .next folder and try again.
    */
-  const query = readFileSync(
-    // https://stackoverflow.com/questions/74924100/vercel-error-enoent-no-such-file-or-directory
-    `${process.cwd()}/clickhouse_queries/${queryName}/query.sql`,
-    "utf8"
+  const query = retargetBenchmarkDatabase(
+    readFileSync(
+      // https://stackoverflow.com/questions/74924100/vercel-error-enoent-no-such-file-or-directory
+      `${process.cwd()}/clickhouse_queries/${queryName}/query.sql`,
+      "utf8"
+    )
   );
   const paramsJson = require(`clickhouse_queries/${queryName}/params.json`);
   const paramsText = paramsJson.params ?? {};

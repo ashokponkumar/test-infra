@@ -43,6 +43,10 @@ import {
   PYTORCH_X_VLLM_BENCHMARK_ID,
   PytorchXVllmBenchmarkDashboardConfig,
 } from "./teams/vllm/pytorch_x_vllm_config";
+import {
+  SPYRE_E2E_BENCHMARK_ID,
+  SpyreE2eBenchmarkDashboardConfig,
+} from "./teams/vllm/spyre_config";
 
 export const REPORT_ID_TO_BENCHMARK_ID_MAPPING: Record<string, string> = {
   compiler_regression: "compiler_inductor",
@@ -78,6 +82,9 @@ export const PREDEFINED_BENCHMARK_CONFIG: BenchmarkConfigMap = {
   },
   [VLLM_BENCHMARK_ID]: {
     [BenchmarkPageType.DashboardPage]: VllmBenchmarkDashboardConfig,
+  },
+  [SPYRE_E2E_BENCHMARK_ID]: {
+    [BenchmarkPageType.DashboardPage]: SpyreE2eBenchmarkDashboardConfig,
   },
   [PYTORCH_GPTFAST_BENCHMARK_ID]: {
     [BenchmarkPageType.DashboardPage]: PytorchGptFastBenchmarkDashboardConfig,
@@ -129,6 +136,11 @@ export const BENCHMARK_ID_MAPPING: Record<string, BenchmarkIdMappingItem> = {
     id: VLLM_BENCHMARK_ID,
     repoName: "vllm-project/vllm",
     benchmarkName: "vLLM benchmark",
+  },
+  [SPYRE_E2E_BENCHMARK_ID]: {
+    id: SPYRE_E2E_BENCHMARK_ID,
+    repoName: "torch-spyre/spyre-inference",
+    benchmarkName: SPYRE_E2E_BENCHMARK_ID,
   },
   [PYTORCH_GPTFAST_BENCHMARK_ID]: {
     id: PYTORCH_GPTFAST_BENCHMARK_ID,
