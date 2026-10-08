@@ -67,6 +67,10 @@ export class BenchmarkMetadataQuery
     this.builder.addWhere(where);
   }
 
+  setTable(table: string) {
+    this.builder.setTable(table);
+  }
+
   toQueryParams(inputs: any) {
     this.validateInputs(inputs);
     return {

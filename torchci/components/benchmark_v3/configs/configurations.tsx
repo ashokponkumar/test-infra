@@ -44,7 +44,9 @@ import {
   PytorchXVllmBenchmarkDashboardConfig,
 } from "./teams/vllm/pytorch_x_vllm_config";
 import {
+  SPYRE_ARTIFACT_BENCHMARK_ID,
   SPYRE_E2E_BENCHMARK_ID,
+  SpyreArtifactBenchmarkDashboardConfig,
   SpyreE2eBenchmarkDashboardConfig,
 } from "./teams/vllm/spyre_config";
 
@@ -85,6 +87,9 @@ export const PREDEFINED_BENCHMARK_CONFIG: BenchmarkConfigMap = {
   },
   [SPYRE_E2E_BENCHMARK_ID]: {
     [BenchmarkPageType.DashboardPage]: SpyreE2eBenchmarkDashboardConfig,
+  },
+  [SPYRE_ARTIFACT_BENCHMARK_ID]: {
+    [BenchmarkPageType.DashboardPage]: SpyreArtifactBenchmarkDashboardConfig,
   },
   [PYTORCH_GPTFAST_BENCHMARK_ID]: {
     [BenchmarkPageType.DashboardPage]: PytorchGptFastBenchmarkDashboardConfig,
@@ -139,6 +144,12 @@ export const BENCHMARK_ID_MAPPING: Record<string, BenchmarkIdMappingItem> = {
   },
   [SPYRE_E2E_BENCHMARK_ID]: {
     id: SPYRE_E2E_BENCHMARK_ID,
+    repoName: "torch-spyre/spyre-inference",
+    benchmarkName: SPYRE_E2E_BENCHMARK_ID,
+  },
+  // Same rows as SPYRE_E2E_BENCHMARK_ID, so the same benchmark name.
+  [SPYRE_ARTIFACT_BENCHMARK_ID]: {
+    id: SPYRE_ARTIFACT_BENCHMARK_ID,
     repoName: "torch-spyre/spyre-inference",
     benchmarkName: SPYRE_E2E_BENCHMARK_ID,
   },

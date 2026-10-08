@@ -95,6 +95,12 @@ export class QueryBuilder {
     return this;
   }
 
+  /** Read from `table` instead of the default one. */
+  setTable(table: string) {
+    this.customTable = table;
+    return this;
+  }
+
   /** Append WHERE clauses (exact-string dedupe). */
   addWhere(clauses: string[]) {
     this.extraWhere.push(...clauses);

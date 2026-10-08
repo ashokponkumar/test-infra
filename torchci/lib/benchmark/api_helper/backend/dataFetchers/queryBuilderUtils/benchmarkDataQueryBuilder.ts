@@ -285,6 +285,10 @@ export class BenchmarkDataQuery extends ExecutableQueryBase {
     this._inner_query_builder.addSelect([mapSelectItem]);
   }
 
+  setTable(table: string) {
+    this._inner_query_builder.setTable(`${table} o`);
+  }
+
   addInnerWhereStatements(statements: string[]) {
     this._inner_query_builder.addWhere(statements);
   }

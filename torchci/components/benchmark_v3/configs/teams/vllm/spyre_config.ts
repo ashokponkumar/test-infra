@@ -6,6 +6,7 @@ import {
 } from "../defaults/default_dashboard_config";
 
 export const SPYRE_E2E_BENCHMARK_ID = "spyre_e2e_benchmark";
+export const SPYRE_ARTIFACT_BENCHMARK_ID = "spyre_artifact_benchmark";
 
 const TIME_METRIC_POLICY: BenchmarkComparisonPolicyConfig = {
   target: "time_metric",
@@ -92,19 +93,23 @@ const METADATA_COLUMNS = [
   },
 ] as const;
 
-export const SpyreE2eBenchmarkDashboardConfig: BenchmarkUIConfig = {
-  benchmarkId: SPYRE_E2E_BENCHMARK_ID,
-  apiId: SPYRE_E2E_BENCHMARK_ID,
-  title: "Spyre E2E Benchmark",
+const spyreDashboardConfig = (
+  benchmarkId: string,
+  title: string,
+  branch: string,
+  intro: string
+): BenchmarkUIConfig => ({
+  benchmarkId,
+  apiId: benchmarkId,
+  title,
   type: "dashboard",
   dataBinding: {
     initial: {
       ...DEFAULT_DASHBOARD_BENCHMARK_INITIAL,
-      benchmarkId: SPYRE_E2E_BENCHMARK_ID,
-      // The ingest stores the bare repo name, not owner/repo.
-      repo: "spyre-inference",
-      lbranch: "main",
-      rbranch: "main",
+      benchmarkId,
+      repo: "torch-spyre/spyre-inference",
+      lbranch: branch,
+      rbranch: branch,
       filters: {
         device: "spyre",
       },
@@ -127,8 +132,7 @@ export const SpyreE2eBenchmarkDashboardConfig: BenchmarkUIConfig = {
           {
             type: "AutoBenchmarkMarkDownContent",
             config: {
-              content:
-                "IBM Spyre E2E Benchmark Dashboard - Compare vLLM performance on Spyre accelerators",
+              content: intro,
             },
           },
           {
@@ -180,8 +184,7 @@ export const SpyreE2eBenchmarkDashboardConfig: BenchmarkUIConfig = {
       {
         type: "AutoBenchmarkMarkDownContent",
         config: {
-          content:
-            "IBM Spyre E2E Benchmark Dashboard - Compare vLLM performance on Spyre accelerators",
+          content: intro,
         },
       },
       {
@@ -207,4 +210,19 @@ export const SpyreE2eBenchmarkDashboardConfig: BenchmarkUIConfig = {
       },
     ],
   },
-};
+});
+
+export const SpyreE2eBenchmarkDashboardConfig = spyreDashboardConfig(
+  SPYRE_E2E_BENCHMARK_ID,
+  "Spyre E2E Benchmark",
+  "main",
+  "IBM Spyre E2E Benchmark Dashboard - Compare vLLM performance on Spyre accelerators"
+);
+
+// Branch is an artifact tag family and commit a tag; family `artifact` holds every artifact.
+export const SpyreArtifactBenchmarkDashboardConfig = spyreDashboardConfig(
+  SPYRE_ARTIFACT_BENCHMARK_ID,
+  "Spyre E2E Benchmark by Artifact",
+  "artifact",
+  "IBM Spyre E2E Benchmark by artifact - each branch is a tag family (`nightly`, `snap`, ...) and each commit a tag in it; `artifact` lists every image a run measured"
+);

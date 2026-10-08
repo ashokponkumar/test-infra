@@ -92,6 +92,10 @@ ORDER BY
     this.builder.addWhere(where);
   }
 
+  setTable(table: string) {
+    this.builder.setTable(table);
+  }
+
   toQueryParams(inputs: any, id?: string) {
     if (inputs.backend && !inputs.backends) {
       inputs.backends = [inputs.backend];
