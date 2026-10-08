@@ -23,6 +23,7 @@ import {
   SpyreArtifactListCommitsFetcher,
   SpyreArtifactMetadataFetcher,
   SpyreBenchmarkDataFetcher,
+  SpyreListCommitsFetcher,
 } from "./queryBuilderUtils/spyreDataFetchers";
 import {
   VllmXPytorchBenchmarkAggregatedDataFetcher,
@@ -65,6 +66,7 @@ const listCommitsCtors: Record<string, new () => BenchmarkListCommitFetcher> = {
   vllm_benchmark: VllmListCommitsDataFetcher,
   pytorch_x_vllm_benchmark: VllmListCommitsDataFetcher,
   pytroch_x_vllm_aggregated: VllmListCommitsDataFetcher,
+  spyre_e2e_benchmark: SpyreListCommitsFetcher,
   spyre_artifact_benchmark: SpyreArtifactListCommitsFetcher,
   default: BenchmarkListCommitQueryBuilder,
 };

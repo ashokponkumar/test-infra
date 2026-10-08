@@ -42,7 +42,18 @@ export class SpyreArtifactBenchmarkDataFetcher extends BenchmarkDataQuery {
   }
 }
 
-export class SpyreArtifactListCommitsFetcher extends BenchmarkListCommitQueryBuilder {
+// The list-commits defaults send arches: [], which the builder reads as set, so a dashboard's
+// arch filter never reached the commit pickers.
+export class SpyreListCommitsFetcher extends BenchmarkListCommitQueryBuilder {
+  toQueryParams(inputs: any, id?: string) {
+    return super.toQueryParams(
+      inputs.arch ? { ...inputs, arches: [inputs.arch] } : inputs,
+      id
+    );
+  }
+}
+
+export class SpyreArtifactListCommitsFetcher extends SpyreListCommitsFetcher {
   constructor() {
     super();
     this.setTable(benchmarkTable("oss_ci_benchmark_metadata_by_tag"));
