@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import styled from "@mui/system/styled";
+import { shortSha } from "components/benchmark_v3/components/dataRender/components/benchmarkTimeSeries/helper";
 import React from "react";
 
 export const UMDenseButton = styled(Button)(({ theme }) => ({
@@ -234,7 +235,7 @@ export const UMDenseCommitDropdown: React.FC<{
           {commitList.map((c) => (
             <MenuItem key={c.workflow_id} value={c.workflow_id}>
               <Box display="flex" flexDirection="column">
-                <Typography variant="body2">{c.commit.slice(0, 7)}</Typography>
+                <Typography variant="body2">{shortSha(c.commit)}</Typography>
                 <Typography variant="caption" color="text.secondary">
                   {c.workflow_id} • {c.date}
                 </Typography>

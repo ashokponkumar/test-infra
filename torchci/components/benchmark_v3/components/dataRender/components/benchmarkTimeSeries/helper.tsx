@@ -242,8 +242,9 @@ export function toSortedWorkflowIdMap(data: any[]) {
   });
 }
 
+// Only a hex sha is shortened: a commit can also be a tag name (the Spyre by-artifact dashboard).
 export const shortSha = (id?: string) =>
-  id ? (id.length > 10 ? id.slice(0, 7) : id) : "—";
+  id ? (/^[0-9a-f]{11,}$/i.test(id) ? id.slice(0, 7) : id) : "—";
 
 export function getBenchmarkTimeSeriesTitle(
   default_title: string = "unknown",

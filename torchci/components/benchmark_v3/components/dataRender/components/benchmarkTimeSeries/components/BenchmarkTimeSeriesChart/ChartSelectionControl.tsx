@@ -3,7 +3,7 @@ import { Stack } from "@mui/system";
 import { SelectionDialog } from "components/benchmark_v3/components/common/SelectionDialog";
 import dayjs from "dayjs";
 import { useState } from "react";
-import { RawTimeSeriesPoint } from "../../helper";
+import { RawTimeSeriesPoint, shortSha } from "../../helper";
 
 type SelectionControlsProps = {
   left: RawTimeSeriesPoint | null;
@@ -42,7 +42,7 @@ export const ChartSelectionControl: React.FC<SelectionControlsProps> = ({
           {left ? (
             <>
               {dayjs.utc(left.granularity_bucket).format("MM-DD HH:mm")} ·{" "}
-              <code>{left.commit.slice(0, 7)}</code>
+              <code>{shortSha(left.commit)}</code>
             </>
           ) : (
             <em>—</em>
@@ -54,7 +54,7 @@ export const ChartSelectionControl: React.FC<SelectionControlsProps> = ({
           {right ? (
             <>
               {dayjs.utc(right.granularity_bucket).format("MM-DD HH:mm")} ·{" "}
-              <code>{right.commit.slice(0, 7)}</code>
+              <code>{shortSha(right.commit)}</code>
             </>
           ) : (
             <em>—</em>

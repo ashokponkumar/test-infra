@@ -1,6 +1,7 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { BenchmarkLinkButton } from "components/benchmark_v3/components/common/BenchmarkLinkButton";
+import { shortSha } from "components/benchmark_v3/components/dataRender/components/benchmarkTimeSeries/helper";
 import { BenchmarkCommitMeta } from "lib/benchmark/store/benchmark_regression_store";
 
 export function BenchmarkComparisonGithubExternalLink({
@@ -33,7 +34,7 @@ export function BenchmarkComparisonGithubExternalLink({
         variant="outlined"
         size="small"
       >
-        {lcommit.workflow_id} ({lcommit.commit.slice(0, 7)})
+        {lcommit.workflow_id} ({shortSha(lcommit.commit)})
       </BenchmarkLinkButton>{" "}
       {lcommit?.workflow_id != rcommit?.workflow_id && (
         <BenchmarkLinkButton
@@ -41,7 +42,7 @@ export function BenchmarkComparisonGithubExternalLink({
           variant="outlined"
           size="small"
         >
-          {rcommit.workflow_id} ({rcommit.commit.slice(0, 7)})
+          {rcommit.workflow_id} ({shortSha(rcommit.commit)})
         </BenchmarkLinkButton>
       )}
     </Box>

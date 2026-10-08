@@ -12,6 +12,7 @@ import {
   getSmartValue,
   RawTimeSeriesPoint,
   renderBasedOnUnitConifg,
+  shortSha,
 } from "../../helper";
 import {
   ChartLineSelectDialog,
@@ -75,7 +76,7 @@ const BenchmarkTimeLineSelectSeriesChart: React.FC<Props> = ({
       .utc(meta.granularity_bucket)
       .format("YYYY-MM-DD HH:mm [UTC]");
     const pct = fmtFixed2(meta.value);
-    const commitShort = meta.commit.slice(0, 7);
+    const commitShort = shortSha(meta.commit);
     const rc = getBenchmarkTimeSeriesChartRenderingConfig(
       meta.metric,
       renderOptions
