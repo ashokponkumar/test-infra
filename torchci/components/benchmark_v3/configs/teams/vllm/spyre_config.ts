@@ -1,9 +1,6 @@
 import { BenchmarkUIConfig } from "../../config_book_types";
 import { BenchmarkComparisonPolicyConfig } from "../../helpers/RegressionPolicy";
-import {
-  BRANCH_METADATA_COLUMN,
-  DEFAULT_DASHBOARD_BENCHMARK_INITIAL,
-} from "../defaults/default_dashboard_config";
+import { DEFAULT_DASHBOARD_BENCHMARK_INITIAL } from "../defaults/default_dashboard_config";
 
 export const SPYRE_E2E_BENCHMARK_ID = "spyre_e2e_benchmark";
 export const SPYRE_ARTIFACT_BENCHMARK_ID = "spyre_artifact_benchmark";
@@ -174,7 +171,11 @@ const spyreDashboardConfig = (
             type: "AutoBenchmarkRawDataTable",
             title: "Raw Data Table",
             config: {
-              extraMetadata: [BRANCH_METADATA_COLUMN, ...METADATA_COLUMNS],
+              extraMetadata: [
+                { field: "branch", displayName: "Tag family" },
+                ...METADATA_COLUMNS,
+              ],
+              renderOptions: { tagKeyed: true },
             },
           },
         ],
@@ -212,17 +213,22 @@ const spyreDashboardConfig = (
   },
 });
 
+// Both ids read the by-tag projection: branch is an artifact tag family and commit a tag, and
+// family `artifact` holds every measured image. Nothing is keyed on a source commit, which
+// measures differently once a dependency moves; spyre_e2e_benchmark stays for old links.
+const SPYRE_INTRO =
+  "IBM Spyre E2E Benchmark by artifact - each branch is a tag family (`nightly`, `snap`, ...) and each commit a tag in it; `artifact` lists every image a run measured";
+
 export const SpyreE2eBenchmarkDashboardConfig = spyreDashboardConfig(
   SPYRE_E2E_BENCHMARK_ID,
   "Spyre E2E Benchmark",
-  "main",
-  "IBM Spyre E2E Benchmark Dashboard - Compare vLLM performance on Spyre accelerators"
+  "artifact",
+  SPYRE_INTRO
 );
 
-// Branch is an artifact tag family and commit a tag; family `artifact` holds every artifact.
 export const SpyreArtifactBenchmarkDashboardConfig = spyreDashboardConfig(
   SPYRE_ARTIFACT_BENCHMARK_ID,
   "Spyre E2E Benchmark by Artifact",
   "artifact",
-  "IBM Spyre E2E Benchmark by artifact - each branch is a tag family (`nightly`, `snap`, ...) and each commit a tag in it; `artifact` lists every image a run measured"
+  SPYRE_INTRO
 );

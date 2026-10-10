@@ -16,13 +16,6 @@ const SPYRE_EXTRA_INFOS = new Map([
   ),
 ]);
 
-export class SpyreBenchmarkDataFetcher extends BenchmarkDataQuery {
-  constructor() {
-    super();
-    this.addExtraInfos(SPYRE_EXTRA_INFOS);
-  }
-}
-
 // The *_by_tag tables file each run under (tag family, tag) as (branch, commit); see the
 // torch-spyre schema 70-vllm-hud-projection.sql.
 export class SpyreArtifactBenchmarkDataFetcher extends BenchmarkDataQuery {

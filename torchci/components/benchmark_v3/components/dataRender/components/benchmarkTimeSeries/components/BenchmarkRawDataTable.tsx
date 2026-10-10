@@ -243,6 +243,18 @@ function getTableConlumnRendering(
     },
   }));
 
+  // A tag-keyed dashboard's commit is a tag and its workflow id a hash of it: neither links
+  // anywhere real, so the run column goes and the tag shows as plain text.
+  if (config?.renderOptions?.tagKeyed) {
+    const tagColumns = metadataColumns
+      .filter((c) => c.field !== "workflow_run")
+      .map((c) =>
+        c.field === "commit"
+          ? { field: "commit", headerName: "Tag", minWidth: 160 }
+          : c
+      );
+    return [...tagColumns, ...metadataCols, ...metricCols];
+  }
   return [...metadataColumns, ...metadataCols, ...metricCols];
 }
 
