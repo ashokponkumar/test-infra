@@ -21,6 +21,9 @@ import { useAppTheme } from "styles/MuiThemeOverrides";
 import "styles/globals.css";
 import("lib/chartTheme");
 
+// A self-hosted build serves no Vercel analytics script.
+const SELF_HOSTED = process.env.NEXT_PUBLIC_SELF_HOSTED === "1";
+
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
@@ -75,7 +78,7 @@ function AppContent({
         <GitHubIncidentBanner />
         <div style={{ margin: "2px" }}>
           <Component {...pageProps} />
-          <Analytics />
+          {!SELF_HOSTED && <Analytics />}
         </div>
       </TitleProvider>
     </ThemeProvider>

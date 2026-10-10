@@ -3,8 +3,9 @@ module.exports = {
   reactStrictMode: true,
   // Opt-in, so the Vercel deployment is untouched: `standalone` emits a self-contained server
   // bundle, which is what a container image needs and what Vercel must not be given.
+  // NEXT_PUBLIC_SELF_HOSTED lets the client drop what only hud.pytorch.org can serve.
   ...(process.env.NEXT_OUTPUT_STANDALONE === "1"
-    ? { output: "standalone" }
+    ? { output: "standalone", env: { NEXT_PUBLIC_SELF_HOSTED: "1" } }
     : {}),
   async rewrites() {
     return [

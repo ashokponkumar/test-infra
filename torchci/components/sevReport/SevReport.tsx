@@ -16,8 +16,11 @@ function SevBox({ issue }: { issue: IssueData }) {
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 export default function SevReport() {
+  // A self-hosted build has no mirror of pytorch/pytorch's GitHub issues to read SEVs from.
   let { data: issues } = useSWR<IssueLabelApiResponse>(
-    `/api/issue/${encodeURIComponent("ci: sev")}`,
+    process.env.NEXT_PUBLIC_SELF_HOSTED === "1"
+      ? null
+      : `/api/issue/${encodeURIComponent("ci: sev")}`,
     fetcher,
     {
       refreshInterval: 60 * 1000, // refresh every minute
